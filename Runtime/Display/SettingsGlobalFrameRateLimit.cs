@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UnityEssentials
 {
-    public class SettingsGlobalFrameRateLimit : SettingsMenuBase
+    public class SettingsGlobalFrameRateLimit : SettingsMenuBase, ISettingsBase<int>, ISettingsSliderConfiguration
     {
         [Info]
         [SerializeField]
@@ -11,32 +11,25 @@ namespace UnityEssentials
             "It allows the user to set a specific frame rate limit through the settings menu, " +
             "ensuring that the game runs at a consistent frame rate as defined by the user.";
 
-        public static int GlobalFrameRateLimit { get; private set; }
-        private static string GlobalFrameRateLimitReference { get; set; } = "global_framerate_limit";
+        public int Value { get; set; }
+        public string Reference => "global_framerate_limit";
 
-        public override void InitializeGetter()
-        {
-            var configurator = gameObject.AddComponent<MenuSliderDataConfigurator>();
-            configurator.MenuName = SettingsMenuName;
-            configurator.DataReference = GlobalFrameRateLimitReference;
-            configurator.MinValue = 0;
-            configurator.MaxValue = 1000;
-            configurator.Default = 1000;
-            configurator.ConfigureMenuData();
-        }
+        public float MinValue => 0;
+        public float MaxValue => 1000;
+        public float Default => 1000;
 
-        public override void InitializeSetter(SettingsProfile profile, out string reference) =>
-            GlobalFrameRateLimit = profile.Value.Get<int>(reference = GlobalFrameRateLimitReference);
+        public override void InitValue(SettingsProfile profile, out string reference) =>
+            Value = profile.Value.Get<int>(reference = Reference);
 
         public override void UpdateSettings()
         {
-            if (GlobalFrameRateLimit <= 0)
-                GlobalFrameRateLimit = (int)GetScreenFrameRate();
+            if (Value <= 0)
+            {
+                var ratio = Screen.currentResolution.refreshRateRatio;
+                Value = Mathf.CeilToInt(ratio.numerator / ratio.denominator);
+            }
 
-            GlobalRefreshRateLimiter.SetTargetFrameRate(GlobalFrameRateLimit);
+            GlobalRefreshRateLimiter.SetTargetFrameRate(Value);
         }
-
-        private float GetScreenFrameRate() =>
-            Screen.currentResolution.refreshRateRatio.numerator / Screen.currentResolution.refreshRateRatio.denominator;
     }
 }
