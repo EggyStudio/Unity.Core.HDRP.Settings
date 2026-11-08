@@ -1,6 +1,6 @@
 {
   "name": "com.unityessentials.core.hdrp.settings",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "displayName": "Core HDRP Settings",
   "description": "This is a part of the UnityEssentials Ecosystem",
   "unity": "6000.0",
@@ -13,7 +13,7 @@
     "com.unityessentials.editor.drawer.serializeddictionary": "2.0.0",
     "com.unityessentials.rendering.camera.camerarefreshrate": "2.0.0",
     "com.unityessentials.rendering.camera.globalrefreshrate": "2.0.0",
-    "com.unityessentials.rendering.camera.rendertexturecreator": "2.0.0",
+    "com.unityessentials.rendering.camera.rendertexture": "2.0.0",
     "com.unityessentials.systems.assetresolver": "2.0.0",
     "com.unityessentials.systems.cameraprovider": "2.0.0",
     "com.unityessentials.systems.predefinedassembly": "2.0.0",
